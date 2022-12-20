@@ -87,11 +87,11 @@ WSGI_APPLICATION = 'my_site.wsgi.application'
 #     }
 # }
 
-# DB_NAME = os.getenv('DB_NAME')
-# DB_USER = os.getenv('DB_USER')
-# DB_PASSWORD = os.getenv('DB_PASSWORD')
-# DB_HOST = os.getenv('DB_HOST')
-# DB_PORT = os.getenv('DB_PORT')
+DB_NAME = os.getenv('DB_NAME')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
 
 DATABASES = {
     'default': {
@@ -103,7 +103,6 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
