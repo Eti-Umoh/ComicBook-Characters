@@ -1,4 +1,8 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
+
+def default_list(self):
+    return list()
 
 # Create your models here.
 class Characters(models.Model):
@@ -19,7 +23,7 @@ class Biography(models.Model):
     character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
     full_name = models.CharField(null=True)
     alter_ego = models.CharField(null=True)
-    aliases = models.CharField(null=True)
+    aliases = ArrayField(models.CharField(null=True), null=True, default=)
     place_of_birth = models.CharField(null=True)
     first_appearance = models.CharField(null=True)
     publisher = models.CharField(null=True)
