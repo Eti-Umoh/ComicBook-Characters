@@ -154,3 +154,5 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'Access-Token',
     'Secret',
 ]
+
+SP_ACCESS_TOKEN = os.getenv('SP_ACCESS_TOKEN')
