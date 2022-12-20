@@ -4,3 +4,4 @@
 
 # router = routers.DefaultRouter()
 # router.register('characters')
+urlpatterns = []
