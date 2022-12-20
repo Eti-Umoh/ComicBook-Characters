@@ -5,13 +5,13 @@ from django.conf import settings
 
 def create_character(ch_id,name,image):
     try:
-        characters = Characters.objects.create(
+        character = Characters.objects.create(
             ch_id=ch_id,
             name=name,
             image=image
         )
 
-        return characters
+        return character
     except Exception as err:
         return None
 
@@ -31,12 +31,12 @@ def create_powerstats_record(character,intelligence,strength,speed,durability,po
     except Exception as err:
         return None
 
-def create_biography_record(character,full_name,alter_ego,aliases,place_of_birth,first_appearance,publisher,alignment):
+def create_biography_record(character,full_name,alter_egos,aliases,place_of_birth,first_appearance,publisher,alignment):
     try:
         biography = Biography.objects.create(
             character=character,
             full_name=full_name,
-            alter_ego=alter_ego,
+            alter_egos=alter_egos,
             aliases=aliases,
             place_of_birth=place_of_birth,
             first_appearance=first_appearance,
