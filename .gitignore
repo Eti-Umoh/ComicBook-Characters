@@ -123,3 +123,4 @@ cython_debug/
 migrations/
 
 celerybeat-schedule.db
+script.py
