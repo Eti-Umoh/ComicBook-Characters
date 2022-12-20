@@ -6,8 +6,8 @@ def default_list(self):
 
 # Create your models here.
 class Characters(models.Model):
-    ch_id = models.CharField(null=True)
-    name = models.CharField(null=True)
+    ch_id = models.TextField(null=True)
+    name = models.TextField(null=True)
     image = models.ImageField(null=True)
 
 class PowerStats(models.Model):
@@ -21,30 +21,30 @@ class PowerStats(models.Model):
 
 class Biography(models.Model):
     character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
-    full_name = models.CharField(null=True)
-    alter_ego = models.CharField(null=True)
-    aliases = ArrayField(models.CharField(null=True), null=True, default=default_list)
-    place_of_birth = models.CharField(null=True)
-    first_appearance = models.CharField(null=True)
-    publisher = models.CharField(null=True)
-    alignment = models.CharField(null=True)
+    full_name = models.TextField(null=True)
+    alter_ego = models.TextField(null=True)
+    aliases = ArrayField(models.TextField(null=True), null=True, default=default_list)
+    place_of_birth = models.TextField(null=True)
+    first_appearance = models.TextField(null=True)
+    publisher = models.TextField(null=True)
+    alignment = models.TextField(null=True)
 
 class Appearance(models.Model):
     character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
-    gender = models.CharField(null=True)
-    race = models.CharField(null=True)
-    height = ArrayField(models.CharField(null=True), null=True, default=default_list)
-    weight = ArrayField(models.CharField(null=True), null=True, default=default_list)
-    eye_color = models.CharField(null=True)
-    hair_color = models.CharField(null=True)
+    gender = models.TextField(null=True)
+    race = models.TextField(null=True)
+    height = ArrayField(models.TextField(null=True), null=True, default=default_list)
+    weight = ArrayField(models.TextField(null=True), null=True, default=default_list)
+    eye_color = models.TextField(null=True)
+    hair_color = models.TextField(null=True)
 
 class Work(models.Model):
     character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
-    occupation = models.CharField(null=True)
-    base = models.CharField(null=True)
+    occupation = models.TextField(null=True)
+    base = models.TextField(null=True)
 
 class Connections(models.Model):
     character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
-    group_affiliation = models.CharField(null=True)
-    relative = models.CharField(null=True)
+    group_affiliation = models.TextField(null=True)
+    relative = models.TextField(null=True)
 
