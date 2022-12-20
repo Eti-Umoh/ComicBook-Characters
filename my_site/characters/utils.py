@@ -95,7 +95,7 @@ def get_super_hero_by_id(hero_id):
         )
 
         if req.status_code != 200:
-            return req.json(), False
+            return req.json()
 
         response = req.json()
         return response
