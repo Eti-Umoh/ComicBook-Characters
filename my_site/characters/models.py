@@ -7,7 +7,7 @@ class Characters(models.Model):
     image = models.ImageField(null=True)
 
 class PowerStats(models.Model):
-    ch_id = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
+    character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
     intelligence = models.IntegerField(null=True)
     strength = models.IntegerField(null=True)
     speed = models.IntegerField(null=True)
@@ -16,7 +16,7 @@ class PowerStats(models.Model):
     combat = models.IntegerField(null=True)
 
 class Biography(models.Model):
-    ch_id = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
+    character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
     full_name = models.CharField(null=True)
     alter_ego = models.CharField(null=True)
     aliases = models.CharField(null=True)
@@ -26,7 +26,7 @@ class Biography(models.Model):
     alignment = models.CharField(null=True)
 
 class Appearance(models.Model):
-    ch_id = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
+    character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
     gender = models.CharField(null=True)
     race = models.CharField(null=True)
     height = models.CharField(null=True)
@@ -35,12 +35,12 @@ class Appearance(models.Model):
     hair_color = models.CharField(null=True)
 
 class Work(models.Model):
-    ch_id = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
+    character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
     occupation = models.CharField(null=True)
     base = models.CharField(null=True)
 
 class Connections(models.Model):
-    ch_id = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
+    character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
     group_affiliation = models.CharField(null=True)
     relative = models.CharField(null=True)
 
