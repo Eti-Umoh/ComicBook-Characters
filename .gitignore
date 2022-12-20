@@ -124,3 +124,5 @@ migrations/
 
 celerybeat-schedule.db
 script.py
+
+ex.json
