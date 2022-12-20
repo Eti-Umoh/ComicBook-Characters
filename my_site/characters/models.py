@@ -23,7 +23,7 @@ class Biography(models.Model):
     character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
     full_name = models.CharField(null=True)
     alter_ego = models.CharField(null=True)
-    aliases = ArrayField(models.CharField(null=True), null=True, default=)
+    aliases = ArrayField(models.CharField(null=True), null=True, default=default_list)
     place_of_birth = models.CharField(null=True)
     first_appearance = models.CharField(null=True)
     publisher = models.CharField(null=True)
