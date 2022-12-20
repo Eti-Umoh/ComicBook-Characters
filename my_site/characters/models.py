@@ -33,8 +33,8 @@ class Appearance(models.Model):
     character = models.ForeignKey(Characters,on_delete=models.SET_NULL,null=True)
     gender = models.CharField(null=True)
     race = models.CharField(null=True)
-    height = models.CharField(null=True)
-    weight = models.CharField(null=True)
+    height = ArrayField(models.CharField(null=True), null=True, default=default_list)
+    weight = ArrayField(models.CharField(null=True), null=True, default=default_list)
     eye_color = models.CharField(null=True)
     hair_color = models.CharField(null=True)
 
