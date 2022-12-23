@@ -1,7 +1,7 @@
 from .models import Characters,Connections,PowerStats,Work,Appearance,Biography
 import requests
 from django.conf import settings
-
+from django.db.models import Q
 
 def create_character(ch_id,name,image):
     try:
@@ -101,3 +101,15 @@ def get_super_hero_by_id(hero_id):
         return response
     except Exception as err:
         return None
+    
+def get_all_characters(search=None):
+    try:
+        characters = Characters.objects.all()
+        if search:
+            characters = characters.filter(
+                Q(name__icontains=search)
+            )
+        
+        return characters
+    except Exception as err:
+        return []
