@@ -113,3 +113,17 @@ def get_all_characters(search=None):
         return characters
     except Exception as err:
         return []
+        
+# def get_character_data(character_id=None):
+#     try:
+#         character = Characters.objects.all()
+#         if character_id:
+#             character = Characters.objects.filter(character_id=character_id)
+#             powerstats = PowerStats.objects.filter(character__id=character_id)
+#             biography = Biography.objects.filter(character__id=character_id)
+#             appearance = Appearance.objects.filter(character__id=character_id)
+#             work = Work.objects.filter(character__id=character_id)
+#             connections = Connections.objects.filter(character__id=character_id)
+#         return character
+#     except Exception as err:
+#         return None, "failed"

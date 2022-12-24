@@ -21,7 +21,7 @@ class AppearanceSerializer(serializers.HyperlinkedModelSerializer):
         model = Appearance
         fields = ('gender','race','height','weight','eye_color','hair_color')
 
-class   WorkSerializer(serializers.HyperlinkedModelSerializer):
+class WorkSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Work
         fields = ('occupation','base')
@@ -30,6 +30,21 @@ class ConnectionsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Connections
         fields = ('group_affiliation','relative')
+
+class PowerStatsMatchUpSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = PowerStats
+        fields = ('id','character','intelligence','strength','speed','durability','power','combat')
+
+
+
+
+
+
+
+
+
+
 
 # class CharactersCreateSerializer(serializers.HyperlinkedModelSerializer):
 #     class PowerStatsTempSerializer(serializers.HyperlinkedModelSerializer):

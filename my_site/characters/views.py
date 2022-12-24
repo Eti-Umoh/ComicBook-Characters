@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import Characters, PowerStats, Appearance, Work, Connections, Biography 
-from .serializers import CharactersSerializer, PowerStatsSerializer, BiographySerializer, AppearanceSerializer, WorkSerializer, ConnectionsSerializer
+from .serializers import CharactersSerializer, PowerStatsSerializer, BiographySerializer, AppearanceSerializer, WorkSerializer, ConnectionsSerializer, PowerStatsMatchUpSerializer
 from .utils import get_all_characters
 from django.db.models import Q
 from drf_multiple_model.viewsets import FlatMultipleModelAPIViewSet
@@ -16,31 +16,7 @@ class CharactersView(viewsets.ModelViewSet):
         queryset = get_all_characters(search)
         return queryset
 
-
-# def get_character_data(character_id=None):
-#     try:
-#         character = Characters.objects.all()
-#         if character_id:
-#             character = Characters.objects.filter(character_id=character_id)
-#             powerstats = PowerStats.objects.filter(character__id=character_id)
-#             biography = Biography.objects.filter(character__id=character_id)
-#             appearance = Appearance.objects.filter(character__id=character_id)
-#             work = Work.objects.filter(character__id=character_id)
-#             connections = Connections.objects.filter(character__id=character_id)
-#         return character
-#     except Exception as err:
-#         return None, "failed"
-    
-
-# class AllCharacterDataView(viewsets.ModelViewSet):
-#     serializer_class = CharactersCreateSerializer
-#     def get_queryset(self):
-#         character_id = self.request.query_params.get('id')
-#         queryset = get_character_data(character_id)
-#         return queryset
-
 class AllCharacterDataView(FlatMultipleModelAPIViewSet):
-    # serializer_class = CharactersCreateSerializer
     def get_querylist(self):
         character_id = self.request.query_params.get('id')
         querylist = [
@@ -52,7 +28,28 @@ class AllCharacterDataView(FlatMultipleModelAPIViewSet):
             {'queryset': Connections.objects.filter(character__id=character_id), 'serializer_class': ConnectionsSerializer}
         ]
         return querylist
+    
+def calculate_matchup(character1_id,character2_id):
+    character1 = PowerStats.objects.filter(character__id=character1_id)
+    character2 = PowerStats.objects.filter(character__id=character2_id)
+    return character1, character2
+class CalculateMatchUpView(viewsets.ModelViewSet):
+    serializer_class = PowerStatsMatchUpSerializer
+    def get_queryset(self):
+        character1_id = self.request.query_params.get('idone')
+        character2_id = self.request.query_params.get('idtwo')
+        queryset = calculate_matchup(character1_id,character2_id)
+        return queryset
+        
 
+
+
+# class AllCharacterDataView(viewsets.ModelViewSet):
+#     serializer_class = CharactersCreateSerializer
+#     def get_queryset(self):
+#         character_id = self.request.query_params.get('id')
+#         queryset = get_character_data(character_id)
+#         return queryset
         
     # def get_queryset(self):
     #     character_id = self.request.query_params.get('id')
