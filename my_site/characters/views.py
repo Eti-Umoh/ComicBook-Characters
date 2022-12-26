@@ -5,6 +5,7 @@ from .serializers import CharactersSerializer, PowerStatsSerializer, BiographySe
 from .utils import get_all_characters
 from django.db.models import Q
 from drf_multiple_model.viewsets import FlatMultipleModelAPIViewSet
+from itertools import chain
 
 # Create your views here.
 
@@ -29,17 +30,19 @@ class AllCharacterDataView(FlatMultipleModelAPIViewSet):
         ]
         return querylist
     
-def calculate_matchup(character1_id,character2_id):
-    character1 = PowerStats.objects.filter(character__id=character1_id)
-    character2 = PowerStats.objects.filter(character__id=character2_id)
-    return character1, character2
+# def calculate_matchup(character1_id,character2_id):
+#     character1 = PowerStats.objects.filter(character__id=character1_id)
+#     character2 = PowerStats.objects.filter(character__id=character2_id)
+#     return character1, character2
 class CalculateMatchUpView(viewsets.ModelViewSet):
     serializer_class = PowerStatsMatchUpSerializer
     def get_queryset(self):
         character1_id = self.request.query_params.get('idone')
         character2_id = self.request.query_params.get('idtwo')
-        queryset = calculate_matchup(character1_id,character2_id)
-        return queryset
+        queryset1 = PowerStats.objects.filter(character__id=character1_id)
+        queryset2 = PowerStats.objects.filter(character__id=character2_id)
+        # queryset = calculate_matchup(character1_id,character2_id)
+        return chain(queryset1,queryset2)
         
 
 
