@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from .models import Characters, PowerStats, Appearance, Work, Connections, Biography 
 from .serializers import CharactersSerializer, PowerStatsSerializer, BiographySerializer, AppearanceSerializer, WorkSerializer, ConnectionsSerializer, PowerStatsMatchUpSerializer
 from .utils import get_all_characters
 from django.db.models import Q
 from drf_multiple_model.viewsets import FlatMultipleModelAPIViewSet
 from itertools import chain
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -39,10 +40,18 @@ class CalculateMatchUpView(viewsets.ModelViewSet):
     def get_queryset(self):
         character1_id = self.request.query_params.get('idone')
         character2_id = self.request.query_params.get('idtwo')
-        queryset1 = PowerStats.objects.filter(character__id=character1_id)
-        queryset2 = PowerStats.objects.filter(character__id=character2_id)
-        # queryset = calculate_matchup(character1_id,character2_id)
-        return chain(queryset1,queryset2)
+        character1 = PowerStats.objects.get(character__id=character1_id)
+        character2 = PowerStats.objects.get(character__id=character2_id)
+        character1_stats_total = ((character1.intelligence)+(character1.strength)+(character1.speed)+(character1.durability)+(character1.power)+(character1.combat))
+        character2_stats_total = ((character2.intelligence)+(character2.strength)+(character2.speed)+(character2.durability)+(character2.power)+(character2.combat))
+        stats_total = character1_stats_total+character2_stats_total
+        character1_win_percent = character1_stats_total*100/stats_total
+        character2_win_percent = 100-character1_win_percent
+        content = JsonResponse({character1.character.name:character1_win_percent}, safe=False, status=status.HTTP_200_OK )
+        print(content)
+        return character1,character2,content
+
+
         
 
 
