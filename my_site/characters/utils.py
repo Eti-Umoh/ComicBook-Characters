@@ -36,7 +36,7 @@ def create_biography_record(character,full_name,alter_egos,aliases,place_of_birt
         biography = Biography.objects.create(
             character=character,
             full_name=full_name,
-            alter_egos=alter_egos,
+            alter_ego=alter_egos,
             aliases=aliases,
             place_of_birth=place_of_birth,
             first_appearance=first_appearance,
@@ -46,6 +46,7 @@ def create_biography_record(character,full_name,alter_egos,aliases,place_of_birt
 
         return biography
     except Exception as err:
+        print(err)
         return None
 
 def create_appearance_record(character,gender,race,height,weight,eye_color,hair_color):
