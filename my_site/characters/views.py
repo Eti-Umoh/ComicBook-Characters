@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.request import Request
 from .models import Characters, PowerStats, Appearance, Work, Connections, Biography 
 from .serializers import CharactersSerializer, PowerStatsSerializer, BiographySerializer, AppearanceSerializer, WorkSerializer, ConnectionsSerializer, PowerStatsMatchUpSerializer
 from .utils import get_all_characters
@@ -30,40 +33,51 @@ class AllCharacterDataView(FlatMultipleModelAPIViewSet):
             {'queryset': Connections.objects.filter(character__id=character_id), 'serializer_class': ConnectionsSerializer}
         ]
         return querylist
-    
-# def calculate_matchup(character1_id,character2_id):
-#     character1 = PowerStats.objects.filter(character__id=character1_id)
-#     character2 = PowerStats.objects.filter(character__id=character2_id)
-#     return character1, character2
-class CalculateMatchUpView(viewsets.ModelViewSet):
-    serializer_class = PowerStatsMatchUpSerializer
-    def get_queryset(self):
-        character1_id = self.request.query_params.get('idone')
-        character2_id = self.request.query_params.get('idtwo')
+
+
+@api_view(['GET','POST'])
+def calculate_match_up(request):
+    character1_id = request.query_params.get('id_one')
+    character2_id = request.query_params.get('id_two')
+    print(character2_id)
+
+    try:
         character1 = PowerStats.objects.get(character__id=character1_id)
+    except:
+        character_1 = Characters.objects.get(id=character1_id)
+        return Response({"message": f"Powerstats does not exist for {character_1.name}"}, status=status.HTTP_404_NOT_FOUND)
+    character1_stats = PowerStatsMatchUpSerializer(character1)
+    try:
         character2 = PowerStats.objects.get(character__id=character2_id)
-        character1_stats_total = ((character1.intelligence)+(character1.strength)+(character1.speed)+(character1.durability)+(character1.power)+(character1.combat))
-        character2_stats_total = ((character2.intelligence)+(character2.strength)+(character2.speed)+(character2.durability)+(character2.power)+(character2.combat))
-        stats_total = character1_stats_total+character2_stats_total
-        character1_win_percent = character1_stats_total*100/stats_total
-        character2_win_percent = 100-character1_win_percent
-        content = JsonResponse({character1.character.name:character1_win_percent}, safe=False, status=status.HTTP_200_OK )
-        print(content)
-        return character1,character2,content
+    except:
+        character_2 = Characters.objects.get(id=character2_id)
+        return Response({"message": f"Powerstats does not exist for {character_2.name}"}, status=status.HTTP_404_NOT_FOUND)
+    character2_stats = PowerStatsMatchUpSerializer(character2)
+    character1_character_data = CharactersSerializer(character1.character)
+    character2_character_data = CharactersSerializer(character2.character)
+
+
+    character1_stats_total = ((character1.intelligence)+(character1.strength)+(character1.speed)+(character1.durability)+(character1.power)+(character1.combat))
+    character2_stats_total = ((character2.intelligence)+(character2.strength)+(character2.speed)+(character2.durability)+(character2.power)+(character2.combat))
+    stats_total = character1_stats_total+character2_stats_total
+    character1_win_percent = round(character1_stats_total*100/stats_total)
+    character2_win_percent = round(100-character1_win_percent)
+
+    data_dict = {
+        "character1": {
+            "data": character1_character_data.data,
+            "info": character1_stats.data,
+            "percent": character1_win_percent
+        },
+        "character2": {
+            "data": character2_character_data.data,
+            "info": character2_stats.data,
+            "percent": character2_win_percent
+        }
+    }
+
+    return Response(data_dict)
 
 
         
 
-
-
-# class AllCharacterDataView(viewsets.ModelViewSet):
-#     serializer_class = CharactersCreateSerializer
-#     def get_queryset(self):
-#         character_id = self.request.query_params.get('id')
-#         queryset = get_character_data(character_id)
-#         return queryset
-        
-    # def get_queryset(self):
-    #     character_id = self.request.query_params.get('id')
-    #     queryset= get_character_data(character_id)
-    #     return queryset

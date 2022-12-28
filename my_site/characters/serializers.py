@@ -34,7 +34,7 @@ class ConnectionsSerializer(serializers.HyperlinkedModelSerializer):
 class PowerStatsMatchUpSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PowerStats
-        fields = ('id','character','intelligence','strength','speed','durability','power','combat')
+        fields = ('intelligence','strength','speed','durability','power','combat')
 
 
 
