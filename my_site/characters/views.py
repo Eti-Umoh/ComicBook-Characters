@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from .models import Characters, PowerStats, Appearance, Work, Connections, Biography 
 from .serializers import CharactersSerializer, PowerStatsSerializer, BiographySerializer, AppearanceSerializer, WorkSerializer, ConnectionsSerializer, PowerStatsMatchUpSerializer
-from .utils import get_all_characters
+from .utils import get_all_characters,threat_level
 from django.db.models import Q
 from drf_multiple_model.viewsets import FlatMultipleModelAPIViewSet
 from itertools import chain
@@ -53,9 +53,9 @@ def calculate_match_up(request):
         character_2 = Characters.objects.get(id=character2_id)
         return Response({"message": f"Powerstats does not exist for {character_2.name}"}, status=status.HTTP_404_NOT_FOUND)
     character2_stats = PowerStatsMatchUpSerializer(character2)
+
     character1_character_data = CharactersSerializer(character1.character)
     character2_character_data = CharactersSerializer(character2.character)
-
 
     character1_stats_total = ((character1.intelligence)+(character1.strength)+(character1.speed)+(character1.durability)+(character1.power)+(character1.combat))
     character2_stats_total = ((character2.intelligence)+(character2.strength)+(character2.speed)+(character2.durability)+(character2.power)+(character2.combat))
@@ -63,16 +63,21 @@ def calculate_match_up(request):
     character1_win_percent = round(character1_stats_total*100/stats_total)
     character2_win_percent = round(100-character1_win_percent)
 
+    character1_threat_level = threat_level(character1_stats_total)
+    character2_threat_level = threat_level(character2_stats_total)
+
     data_dict = {
         "character1": {
             "data": character1_character_data.data,
             "info": character1_stats.data,
-            "percent": character1_win_percent
+            "percent": character1_win_percent,
+            "threat level": character1_threat_level
         },
         "character2": {
             "data": character2_character_data.data,
             "info": character2_stats.data,
-            "percent": character2_win_percent
+            "percent": character2_win_percent,
+            "threat level": character2_threat_level
         }
     }
 

@@ -114,6 +114,16 @@ def get_all_characters(search=None):
         return characters
     except Exception as err:
         return []
+
+def threat_level(character_stats_total):
+    if character_stats_total <= 200:
+        return f"Low"
+    elif character_stats_total <= 300:
+        return f"Medium"
+    elif character_stats_total <= 500:
+        return f"High"
+    else:
+        return f"Extreme"
         
 # def get_character_data(character_id=None):
 #     try:
