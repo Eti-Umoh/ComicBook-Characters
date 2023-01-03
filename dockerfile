@@ -14,4 +14,4 @@ RUN python3 manage.py collectstatic
 RUN apt-get update && apt-get install -y redis-server
 EXPOSE 9190
 
-CMD ["gunicorn", "-b", "0.0.0.0:9190", "my_site.asgi:application"]
+CMD ["gunicorn", "-b", "0.0.0.0:9190", "my_site.asgi:app"]
