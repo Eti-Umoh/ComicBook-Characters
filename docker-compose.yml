@@ -1,0 +1,19 @@
+version: '3'
+services:
+    
+  api: 
+    build: .
+    image: &comicbook-api comicbook-api
+    container_name: comicbook-api
+    restart: on-failure
+    command: ["gunicorn", "-b", "0.0.0.0:9190", "my_site.asgi:app"]
+    ports:
+      - 9190:9190
+    volumes:
+      - data-vol:/opt/COMICBOOK-CHARACTERS/my_site/data-vol
+    env_file:
+      - ./my_site/.env
+
+volumes:
+  data-vol:
+
